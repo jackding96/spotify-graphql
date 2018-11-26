@@ -1,13 +1,10 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const app = express();
-
-const schema = require('./schema');
-
+var express = require('express');
+var graphqlHTTP = require('express-graphql');
+var app = express();
+var schema = require('./schema');
 app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: true
+    schema: schema,
+    graphiql: true
 }));
-
 app.listen(3000);
 console.log('Server listening on 3000!');
