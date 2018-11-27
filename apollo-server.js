@@ -1,4 +1,5 @@
 const express = require('express');
+const request = require('request-promise');
 const { ApolloServer, gql } = require('apollo-server-express');
 
 const CLIENT_ID = '5e5831321ddd4ffb891c76e0dff3a598';
@@ -23,25 +24,47 @@ async function getToken(CLIENT_ID, CLIENT_SECRET) {
   });
 }
 
+const dummy = [
+  {
+    na: 'Song 1',
+    year: 2001,
+  },
+  {
+    na: 'Song 2',
+    year: 2002,
+  },
+  {
+    na: 'Song 3',
+    year: 2003,
+  },    
+];
+
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
-  type TrackType {
-    name: String
+  type Track {
+    name: String,
+    year: Int
   }
 
   type Query {
-    track: String
+    getTrack: Track
+    allTracks: [Track]
   }
 `;
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    track(obj, args, context, info) {
-      getToken()
-      return 'Hello!'
+    getTrack() {
+      return {
+        name: dummy[0].na,
+        year: dummy[0].year
+      };
+    },
+    allTracks() {
+      return dummy;
     }
-  },
+  }
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
