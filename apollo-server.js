@@ -26,43 +26,71 @@ async function getToken(CLIENT_ID, CLIENT_SECRET) {
 
 const dummy = [
   {
-    na: 'Song 1',
+    id: 1,
+    name: 'Song 1',
     year: 2001,
   },
   {
-    na: 'Song 2',
+    id: 2,
+    name: 'Song 2',
     year: 2002,
   },
   {
-    na: 'Song 3',
+    id: 3,
+    name: 'Song 3',
     year: 2003,
   },    
 ];
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
+  type Query {
+    getTrack(id: Int): Track
+  }
+
   type Track {
     name: String,
+    artist: Artist,
     year: Int
   }
 
-  type Query {
-    getTrack: Track
-    allTracks: [Track]
+  type Artist {
+    name: String,
+    genre: String,
   }
 `;
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    getTrack() {
-      return {
-        name: dummy[0].na,
-        year: dummy[0].year
-      };
+    getTrack(obj, args, context, info) {
+      return dummy[args.id];
+    }
+  },
+
+  Track: {
+    name(obj) {
+      console.log('Track resolver', obj);
+      return 'Blackbird';
     },
-    allTracks() {
-      return dummy;
+    artist(obj) {
+      console.log('Track resolver', obj);
+      return 'Hello'
+    },
+    year(obj) {
+      console.log('Track resolver', obj);
+      return 1969;
+    }
+  },
+
+  Artist: {
+    name(obj) {
+      console.log('Artist resolver', obj);
+      return 'John Lennon';
+    },
+    genre(obj) { 
+      console.log('Artist resolver', obj);
+      return 'Rock';
     }
   }
 };
