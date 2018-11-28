@@ -24,39 +24,19 @@ async function getToken(CLIENT_ID, CLIENT_SECRET) {
   });
 }
 
-const dummy = [
-  {
-    id: 1,
-    name: 'Song 1',
-    year: 2001,
-  },
-  {
-    id: 2,
-    name: 'Song 2',
-    year: 2002,
-  },
-  {
-    id: 3,
-    name: 'Song 3',
-    year: 2003,
-  },    
-];
-
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Query {
-    getTrack(id: Int): Track
+    getTrack(id: String): Track
   }
 
   type Track {
     name: String,
-    artist: Artist,
-    year: Int
+    artists: [Artist],
   }
 
   type Artist {
     name: String,
-    genre: String,
   }
 `;
 
@@ -64,34 +44,39 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     getTrack(obj, args, context, info) {
-      return dummy[args.id];
+      return new Promise((resolve, reject) => {
+        getToken(CLIENT_ID, CLIENT_SECRET)
+          .then((token) => {
+            let options = {
+              method: 'GET',
+              url: `https://api.spotify.com/v1/tracks/${args.id}`,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+              json: true
+            };
+            request(options)
+              .then(r => resolve(r))
+              .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
+      });
     }
   },
 
   Track: {
     name(obj) {
-      console.log('Track resolver', obj);
-      return 'Blackbird';
+      return obj.name;
     },
-    artist(obj) {
-      console.log('Track resolver', obj);
-      return 'Hello'
+    artists(obj) {
+      return obj.artists;
     },
-    year(obj) {
-      console.log('Track resolver', obj);
-      return 1969;
-    }
   },
 
   Artist: {
     name(obj) {
-      console.log('Artist resolver', obj);
-      return 'John Lennon';
+      return obj.name;
     },
-    genre(obj) { 
-      console.log('Artist resolver', obj);
-      return 'Rock';
-    }
   }
 };
 
