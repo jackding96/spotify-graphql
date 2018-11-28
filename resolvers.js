@@ -49,7 +49,6 @@ module.exports = {
       return new Promise((resolve, reject) => {
         getToken(CLIENT_ID, CLIENT_SECRET)
           .then((token) => {
-            console.log('Token!', token);
             let options = {
               method: 'GET',
               url: `https://api.spotify.com/v1/tracks/${args.id}`,
@@ -89,7 +88,6 @@ module.exports = {
             };
             request(options)
               .then(r => {
-                console.log(r.items);
                 resolve(r.items);
               })
               .catch(err => reject(err));
@@ -111,18 +109,27 @@ module.exports = {
             };
             request(options)
               .then(r => {
-                console.log(r.items);
-                resolve(r.items);
-
-                // For each, get full album
-
+                albumPromises = r.items.map((item) => {
+                  console.log(item.name);
+                  let albumOptions = {
+                    method: 'GET',
+                    url: `https://api.spotify.com/v1/albums/${item.id}`,
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                    },
+                    json: true
+                  };
+                  return request(albumOptions);            
+                });
+                Promise.all(albumPromises).then((albums) => { 
+                  resolve(albums);
+                })
               })
               .catch(err => reject(err));
           })
           .catch(err => reject(err));
       });       
     }
-    // albums: [Album],
     // top_tracks: [Track],
   }, 
 
