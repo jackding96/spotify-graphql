@@ -7,6 +7,18 @@ module.exports = gql`
     track(id: String): Track
   }
 
+  type Artist {
+    genres: [String],
+    id: String,
+    name: String,
+    popularity: Int,
+    type: String,
+    uri: String,
+    related_artists: [Artist],
+    albums: [Album],
+    top_tracks: [Track],
+  }  
+
   type Album {
     album_type: String,
     artists: [Artist],
@@ -23,20 +35,8 @@ module.exports = gql`
     uri: String,
   }
 
-  type Artist {
-    genres: [String],
-    id: String,
-    name: String,
-    popularity: Int,
-    type: String,
-    uri: String,
-    related_artists: [Artist],
-    albums: [Album],
-    top_tracks: [Track],
-  }  
-
   type Track {
-    album: [Album],
+    album: Album,
     artists: [Artist],
     available_markets: [String],
     disc_number: Int,
@@ -48,7 +48,7 @@ module.exports = gql`
     track_number: Int,
     type: String,
     uri: String,
-    audio_features: [AudioFeatures]
+    audio_features: AudioFeatures
   }
 
   type AudioFeatures {
