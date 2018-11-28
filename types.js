@@ -16,7 +16,7 @@ module.exports = gql`
     uri: String,
     related_artists: [Artist],
     albums: [Album],
-    top_tracks: [Track],
+    top_tracks(market: String): [Track],
   }  
 
   type Album {

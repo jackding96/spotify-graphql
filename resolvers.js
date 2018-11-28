@@ -74,7 +74,7 @@ module.exports = {
     // type: String,
     // uri: String,
     // related_artists: [Artist],
-    related_artists(obj) {
+    related_artists(obj, args, context, info) {
       return new Promise((resolve, reject) => {
         getToken(CLIENT_ID, CLIENT_SECRET)
           .then((token) => {
@@ -129,8 +129,31 @@ module.exports = {
           })
           .catch(err => reject(err));
       });       
+    },
+    top_tracks(obj, args, context, info) {
+      return new Promise((resolve, reject) => {
+        getToken(CLIENT_ID, CLIENT_SECRET)
+          .then((token) => {
+            let options = {
+              method: 'GET',
+              url: `https://api.spotify.com/v1/artists/${obj.id}/top-tracks`,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+              qs: {
+                market: args.market,
+              },
+              json: true
+            };
+            request(options)
+              .then(r => {
+                resolve(r.tracks);
+              })
+              .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
+      });      
     }
-    // top_tracks: [Track],
   }, 
 
   Album: {
