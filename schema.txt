@@ -1,0 +1,11 @@
+Album
+  artists: [Artist]
+  tracklist: [Track]
+
+Artist
+  topTracks: [Track]
+  relatedArtists: [Artist]
+  albums: [Album]
+
+Track
+  audioFeatures: [AudioFeatures]
