@@ -73,7 +73,6 @@ module.exports = {
     // popularity: Int,
     // type: String,
     // uri: String,
-    // related_artists: [Artist],
     related_artists(obj, args, context, info) {
       return new Promise((resolve, reject) => {
         getToken(CLIENT_ID, CLIENT_SECRET)
