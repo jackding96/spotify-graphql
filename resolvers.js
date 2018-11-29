@@ -109,7 +109,6 @@ module.exports = {
             request(options)
               .then(r => {
                 albumPromises = r.items.map((item) => {
-                  console.log(item.name);
                   let albumOptions = {
                     method: 'GET',
                     url: `https://api.spotify.com/v1/albums/${item.id}`,
@@ -158,6 +157,30 @@ module.exports = {
   Album: {
     // album_type: String,
     // artists: [Artist],
+    artists(obj) {
+      return new Promise((resolve, reject) => {
+        getToken(CLIENT_ID, CLIENT_SECRET)
+          .then((token) => {
+            artistPromises = obj.artists.map((artist) => {
+              let options = {
+                method: 'GET',
+                url: `https://api.spotify.com/v1/artists/${artist.id}`,
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
+                json: true
+              };
+              return request(options);
+            });
+      
+            Promise.all(artistPromises).then((artists) => {
+              resolve(artists);
+            })
+            .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
+      });    
+    }
     // available_markets: [String],
     // genres: [String],
     // id: String,
