@@ -180,7 +180,7 @@ module.exports = {
           })
           .catch(err => reject(err));
       });    
-    }
+    },
     // available_markets: [String],
     // genres: [String],
     // id: String,
@@ -189,7 +189,42 @@ module.exports = {
     // popularity: Int,
     // release_date: String,
     // release_date_precision: String,
-    // tracks: [Track],
+    tracks(obj) {
+      return new Promise((resolve, reject) => {
+        getToken(CLIENT_ID, CLIENT_SECRET)
+          .then((token) => {
+            let options = {
+              method: 'GET',
+              url: `https://api.spotify.com/v1/albums/${obj.id}/tracks`,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+              json: true
+            };
+            request(options)
+              .then(r => {
+                trackPromises = r.items.map((track) => {
+                  let options = {
+                    method: 'GET',
+                    url: `https://api.spotify.com/v1/tracks/${track.id}`,
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                    },
+                    json: true
+                  };
+                  return request(options);
+                });
+          
+                Promise.all(trackPromises).then((tracks) => {
+                  resolve(tracks);
+                })
+                .catch(err => reject(err));                
+              })
+              .catch(err => reject(err));
+          })
+          .catch(err => reject(err));
+      });       
+    }
     // type: String,
     // uri: String,
   },
