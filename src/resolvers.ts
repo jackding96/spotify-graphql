@@ -1,9 +1,8 @@
-const request = require('request-promise');
+import * as request from 'request-promise';
+const getToken = require('./getToken');
 
 const CLIENT_ID = '5e5831321ddd4ffb891c76e0dff3a598';
 const CLIENT_SECRET = 'b0c6e32fcb4b4027aa2a1793ac4baaca';
-
-const getToken = require('./getToken');
 
 module.exports = {
   Query: {
@@ -108,7 +107,7 @@ module.exports = {
             };
             request(options)
               .then(r => {
-                albumPromises = r.items.map((item) => {
+                const albumPromises = r.items.map((item) => {
                   let albumOptions = {
                     method: 'GET',
                     url: `https://api.spotify.com/v1/albums/${item.id}`,
@@ -161,7 +160,7 @@ module.exports = {
       return new Promise((resolve, reject) => {
         getToken(CLIENT_ID, CLIENT_SECRET)
           .then((token) => {
-            artistPromises = obj.artists.map((artist) => {
+            const artistPromises = obj.artists.map((artist) => {
               let options = {
                 method: 'GET',
                 url: `https://api.spotify.com/v1/artists/${artist.id}`,
@@ -203,7 +202,7 @@ module.exports = {
             };
             request(options)
               .then(r => {
-                trackPromises = r.items.map((track) => {
+                const trackPromises = r.items.map((track) => {
                   let options = {
                     method: 'GET',
                     url: `https://api.spotify.com/v1/tracks/${track.id}`,

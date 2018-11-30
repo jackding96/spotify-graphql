@@ -1,5 +1,5 @@
-const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
+import * as express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 
 // Types and resolvers
 const typeDefs = require('./types');

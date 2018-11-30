@@ -1,4 +1,4 @@
-const request = require('request-promise');
+import * as request from 'request-promise';
 
 module.exports = async function(CLIENT_ID, CLIENT_SECRET) {
   return new Promise((resolve, reject) => {    
@@ -6,7 +6,7 @@ module.exports = async function(CLIENT_ID, CLIENT_SECRET) {
       method: 'POST',
       url: 'https://accounts.spotify.com/api/token',
       headers: {
-        'Authorization': 'Basic ' + (new Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+        'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
       },
       form: {
         grant_type: 'client_credentials'

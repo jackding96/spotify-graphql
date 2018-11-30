@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,7 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const request = require('request-promise');
+Object.defineProperty(exports, "__esModule", { value: true });
+const request = require("request-promise");
 module.exports = function (CLIENT_ID, CLIENT_SECRET) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
@@ -14,7 +16,7 @@ module.exports = function (CLIENT_ID, CLIENT_SECRET) {
                 method: 'POST',
                 url: 'https://accounts.spotify.com/api/token',
                 headers: {
-                    'Authorization': 'Basic ' + (new Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+                    'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
                 },
                 form: {
                     grant_type: 'client_credentials'
