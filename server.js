@@ -1,10 +1,16 @@
-var express = require('express');
-var graphqlHTTP = require('express-graphql');
-var app = express();
-var schema = require('./schema');
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    graphiql: true
-}));
-app.listen(3000);
-console.log('Server listening on 3000!');
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
+
+// Types and resolvers
+const typeDefs = require('./types');
+const resolvers = require('./resolvers');
+
+// Get up GraphQL and Express server
+const server = new ApolloServer({ typeDefs, resolvers });
+
+const app = express();
+server.applyMiddleware({ app });
+
+app.listen({ port: 4000 }, () =>
+  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+);

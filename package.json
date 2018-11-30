@@ -18,5 +18,9 @@
     "node-fetch": "^2.3.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3"
   }
 }
