@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
+    "lib": ["es6", "dom"],
     "module": "commonjs",
-    "target": "ES6",
-    "outDir": "build",
+    "target": "es6",
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
     "rootDir": "src",
+    "outDir": "dist/",
+    "removeComments": true,
+    "skipLibCheck": true
   }
 }

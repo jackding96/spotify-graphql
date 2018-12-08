@@ -65,12 +65,6 @@ module.exports = {
         }
     },
     Artist: {
-        // genres: [String],
-        // id: String,
-        // name: String,
-        // popularity: Int,
-        // type: String,
-        // uri: String,
         related_artists(obj, args, context, info) {
             return new Promise((resolve, reject) => {
                 getToken(CLIENT_ID, CLIENT_SECRET)
@@ -152,8 +146,6 @@ module.exports = {
         }
     },
     Album: {
-        // album_type: String,
-        // artists: [Artist],
         artists(obj) {
             return new Promise((resolve, reject) => {
                 getToken(CLIENT_ID, CLIENT_SECRET)
@@ -177,14 +169,6 @@ module.exports = {
                     .catch(err => reject(err));
             });
         },
-        // available_markets: [String],
-        // genres: [String],
-        // id: String,
-        // label: String,
-        // name: String,
-        // popularity: Int,
-        // release_date: String,
-        // release_date_precision: String,
         tracks(obj) {
             return new Promise((resolve, reject) => {
                 getToken(CLIENT_ID, CLIENT_SECRET)
@@ -220,8 +204,6 @@ module.exports = {
                     .catch(err => reject(err));
             });
         }
-        // type: String,
-        // uri: String,
     },
     Track: {
         album(obj) {
@@ -243,17 +225,6 @@ module.exports = {
                     .catch(err => reject(err));
             });
         },
-        // artists: [Artist],
-        // available_markets: [String],
-        // disc_number: Int,
-        // duration_ms: Int,
-        // explicit: Boolean,
-        // id: String,
-        // name: String,
-        // popularity: Int,
-        // track_number: Int,
-        // type: String,
-        // uri: String,
         audio_features(obj) {
             return new Promise((resolve, reject) => {
                 getToken(CLIENT_ID, CLIENT_SECRET)
@@ -274,20 +245,5 @@ module.exports = {
             });
         }
     },
-    AudioFeatures: {
-    // key: Int,
-    // mode: Int,
-    // time_signature: Int,
-    // acousticness: Float,
-    // danceability: Float,
-    // energy: Float,
-    // instrumentalness: Float,
-    // liveness: Float,
-    // loudness: Float,
-    // speechiness: Float,
-    // valence: Float,
-    // tempo: Float,
-    // id: String,
-    // type: String
-    }
+    AudioFeatures: {}
 };
