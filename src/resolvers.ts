@@ -62,6 +62,46 @@ module.exports = {
           })
           .catch(err => reject(err));
       });
+    },
+    search(obj, args, context, info) {
+      return new Promise((resolve, reject) => {
+        getToken(CLIENT_ID, CLIENT_SECRET)
+          .then((token) => {
+            let options = {
+              method: 'GET',
+              url: `https://api.spotify.com/v1/search/`,
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+              qs: {
+                q: args.q,
+                type: args.type
+              },
+              json: true
+            };  
+            request(options)
+              .then(r => {
+                // console.log(r.artists)
+                resolve(r.artists.items)
+              })
+              .catch(err => reject(err));                      
+          })
+          .catch(err => reject(err))
+      });
+    }
+  },
+
+  SearchResult: {
+    __resolveType(obj, context, info) {
+      if (obj.type == 'artist') {
+        return 'Artist'
+      }
+      if (obj.type == 'album') {
+        return 'Album'
+      }
+      if (obj.type == 'track') {
+        return 'Track'
+      }
     }
   },
 

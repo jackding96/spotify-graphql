@@ -1,10 +1,17 @@
 import { gql } from 'apollo-server-express';
 
 module.exports = gql`
+  enum ItemType {
+    artist, album, track
+  }
+
+  union SearchResult = Artist | Album | Track
+
   type Query {
     artist(id: String): Artist,
     album(id: String): Album,
-    track(id: String): Track
+    track(id: String): Track,
+    search(q: String, type: String): [SearchResult]
   }
 
   type Artist {

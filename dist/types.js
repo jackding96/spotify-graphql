@@ -2,10 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_express_1 = require("apollo-server-express");
 module.exports = apollo_server_express_1.gql `
+  enum ItemType {
+    artist, album, track
+  }
+
+  union SearchResult = Artist | Album | Track
+
   type Query {
     artist(id: String): Artist,
     album(id: String): Album,
-    track(id: String): Track
+    track(id: String): Track,
+    search(q: String, type: String): [SearchResult]
   }
 
   type Artist {
