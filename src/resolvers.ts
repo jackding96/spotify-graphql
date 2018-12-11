@@ -81,8 +81,8 @@ module.exports = {
             };  
             request(options)
               .then(r => {
-                // console.log(r.artists)
-                resolve(r.artists.items)
+                const results = (r.artists ? r.artists.items : []).concat(r.albums ? r.albums.items : []).concat(r.tracks ? r.tracks.items : []);
+                resolve(results)
               })
               .catch(err => reject(err));                      
           })
