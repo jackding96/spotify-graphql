@@ -1,9 +1,9 @@
 # Spotify GraphQL Wrapper
 
-##Starting the Server:
+## Starting the Server:
 > npm i && npm start
 
-##Types
+## Types
 enum ItemType {
   artist, album, track
 }
