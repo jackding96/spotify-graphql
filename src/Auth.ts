@@ -1,20 +1,30 @@
 import * as request from 'request-promise';
 
 export class Auth {
-  ACCESS_TOKEN: string;
+  ACCESS_TOKEN;
+  CLIENT_ID: string;
+  CLIENT_SECRET: string;
+
   constructor(CLIENT_ID: string, CLIENT_SECRET: string) {
-    this.refreshToken(CLIENT_ID, CLIENT_SECRET).then((t: string) => {
-      this.ACCESS_TOKEN = t;
-    });
+    // Initialize variables
+    this.CLIENT_ID = CLIENT_ID;
+    this.CLIENT_SECRET = CLIENT_SECRET;
+
+    // Refresh token on object init
+    this.refreshToken();
   }
-  // Fetch token via API if not available
-  async refreshToken(CLIENT_ID: string, CLIENT_SECRET: string) {
+  // Fetches token and sets it as ACCESS_TOKEN
+  async refreshToken() {
+    this.ACCESS_TOKEN = await this.fetchToken();
+  }
+  // Fetch token via API
+  async fetchToken() {
     return new Promise((resolve, reject) => {    
       let authOptions = {
         method: 'POST',
         url: 'https://accounts.spotify.com/api/token',
         headers: {
-          'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
+          'Authorization': 'Basic ' + (Buffer.from(this.CLIENT_ID + ':' + this.CLIENT_SECRET).toString('base64'))
         },
         form: {
           grant_type: 'client_credentials'
@@ -26,7 +36,12 @@ export class Auth {
         .catch((err) => { reject(err) });
     });
   }
-  getToken() {
-    return this.ACCESS_TOKEN;
+  // Returns a valid token
+  async getToken() {
+    if (this.ACCESS_TOKEN) {
+      return this.ACCESS_TOKEN;
+    } else {
+      this.refreshToken().then(() => this.ACCESS_TOKEN);
+    }
   }
 }
