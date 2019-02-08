@@ -64,7 +64,6 @@ module.exports = {
             });
         },
         search(obj, args, context, info) {
-            console.log(obj);
             return new Promise((resolve, reject) => {
                 getToken(CLIENT_ID, CLIENT_SECRET)
                     .then((token) => {
