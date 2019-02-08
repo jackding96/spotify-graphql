@@ -1,0 +1,2 @@
+# Spotify GraphQL Wrapper
+
